@@ -17,8 +17,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var gridLayout: GridLayout
     lateinit var cardView: CardView
     lateinit var imageView: ImageView
-    val randomCardStart: Int = (0..15).random()
-    val randomCardFinish: Int = (0..15).random()
     val board = Array(4) { arrayOfNulls<CardView>(4) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,14 +62,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initStartFinish() {
-        //Con un numero aleatorio, lo utilizamos para acceder a la tarjeta de una posicion aleatoria en el gridlayout
-        val cardStart = gridLayout.getChildAt(randomCardStart) as CardView
+        //Generamos posiciones aleatorias
+        var randomRowStart = (0..3).random()
+        var randomColumnStart=(0..3).random()
+        val randomRowFinish=(0..3).random()
+        val randomColumnFinish=(0..3).random()
+        //Si coinciden en el mismo sitio, o en posiciones adyacentes vertical u horizontal, generamos nuevas posiciones
+        while (randomRowStart == randomRowFinish+1 || randomRowStart == randomRowFinish-1 ||
+            randomColumnStart == randomColumnFinish+1 || randomColumnStart == randomColumnFinish-1 ||
+            (randomRowStart == randomRowFinish && randomColumnStart == randomColumnFinish)) {
+
+            randomRowStart = (0..3).random()
+            randomColumnStart = (0..3).random()
+            /*println(numFilaStart)
+            println(numColumnaStart)
+            println(numFilaFinish)
+            println(numColumnaFinish)*/
+        }
+        //Lo convertimos a indice para el gridlayout
+        val cardStartPosition:Int = randomRowStart * 4 + randomColumnStart
+        val cardFinishPosition:Int = randomRowFinish * 4 + randomColumnFinish
+        /*println(cardStartPosition)
+        println(cardFinishPosition)*/
+        //Con el indice generado, podemos acceder a la tarjeta de una posicion aleatoria en el gridlayout
+        val cardStart = gridLayout.getChildAt(cardStartPosition) as CardView
         //con la tarjeta ya podemos inicializar la imagen y poder cambiar el fondo de una, que será el comienzo
         val imageStart = cardStart.findViewById<ImageView>(R.id.imageView)
         imageStart.setImageResource(R.drawable.img_1)
 
         //Hacmeos lo mismo con otra posicion para el final
-        val cardFinish = gridLayout.getChildAt(randomCardFinish) as CardView
+        val cardFinish = gridLayout.getChildAt(cardFinishPosition) as CardView
         val imageFinish = cardFinish.findViewById<ImageView>(R.id.imageView)
         imageFinish.setImageResource(R.drawable.img)
     }
