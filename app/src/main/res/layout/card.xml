@@ -5,18 +5,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="80dp"
     android:layout_height="80dp"
-    app:cardBackgroundColor="@color/black"
+    app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="8dp"
     android:layout_margin="8dp"
     tools:ignore="MissingConstraints">
 
-    <TextView
-        android:id="@+id/textView"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="40sp"
-        >
-    </TextView>
+        android:scaleType="fitCenter">
+    </ImageView>
 </androidx.cardview.widget.CardView>
