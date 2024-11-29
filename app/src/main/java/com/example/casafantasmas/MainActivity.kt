@@ -19,6 +19,17 @@ class MainActivity : AppCompatActivity() {
     lateinit var imageView: ImageView
     val board = Array(4) { arrayOfNulls<CardView>(4) }
 
+    //Variables para trackear la posicion del usuario
+    lateinit var cardUsuario:CardView
+    lateinit var imageUsuario:ImageView
+
+    //Generamos posiciones aleatorias
+    var randomRowStart = (0..3).random()
+    var randomColumnStart=(0..3).random()
+    val randomRowFinish=(0..3).random()
+    val randomColumnFinish=(0..3).random()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -27,13 +38,12 @@ class MainActivity : AppCompatActivity() {
         initComponents()
         initGridLayout()
         assingCardsToArray()
+        displayMoves()
 
         //Acceder a una tarjeta en concreto
         val card1 = gridLayout.getChildAt(0) as CardView
         //Acceder a la imagen de dentro de la tarjeta
         val image1 = card1.findViewById<ImageView>(R.id.imageView)
-
-
     }
 
     private fun assingCardsToArray() {
@@ -62,11 +72,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initStartFinish() {
-        //Generamos posiciones aleatorias
-        var randomRowStart = (0..3).random()
-        var randomColumnStart=(0..3).random()
-        val randomRowFinish=(0..3).random()
-        val randomColumnFinish=(0..3).random()
         //Si coinciden en el mismo sitio, o en posiciones adyacentes vertical u horizontal, generamos nuevas posiciones
         while (randomRowStart == randomRowFinish+1 || randomRowStart == randomRowFinish-1 ||
             randomColumnStart == randomColumnFinish+1 || randomColumnStart == randomColumnFinish-1 ||
@@ -74,6 +79,8 @@ class MainActivity : AppCompatActivity() {
 
             randomRowStart = (0..3).random()
             randomColumnStart = (0..3).random()
+            println("randomRowStart " +randomRowStart)
+            println("randomColumnStart "+randomColumnStart)
             /*println(numFilaStart)
             println(numColumnaStart)
             println(numFilaFinish)
@@ -85,16 +92,46 @@ class MainActivity : AppCompatActivity() {
         /*println(cardStartPosition)
         println(cardFinishPosition)*/
         //Con el indice generado, podemos acceder a la tarjeta de una posicion aleatoria en el gridlayout
-        val cardStart = gridLayout.getChildAt(cardStartPosition) as CardView
+        cardUsuario = gridLayout.getChildAt(cardStartPosition) as CardView
         //con la tarjeta ya podemos inicializar la imagen y poder cambiar el fondo de una, que será el comienzo
-        val imageStart = cardStart.findViewById<ImageView>(R.id.imageView)
-        imageStart.setImageResource(R.drawable.img_1)
+        imageUsuario = cardUsuario.findViewById<ImageView>(R.id.imageView)
+        imageUsuario.setImageResource(R.drawable.img_1)
 
-        //Hacmeos lo mismo con otra posicion para el final
+        //Hacemos lo mismo con otra posicion para el final
         val cardFinish = gridLayout.getChildAt(cardFinishPosition) as CardView
         val imageFinish = cardFinish.findViewById<ImageView>(R.id.imageView)
         imageFinish.setImageResource(R.drawable.img)
     }
+    fun displayMoves() {
+        //Con respecto a donde ha empezado el usuario, conseguimos las posiciones adyacentes
+        var bottomPosition:Int=-1
+        var topPosition:Int =-1
+        var rightPosition:Int =-1
+        var leftPosition:Int =-1
+
+        bottomPosition = (randomRowStart+1) * 4  + randomColumnStart //Adyacente inferior
+        topPosition = (randomRowStart-1) * 4 + randomColumnStart //Adyacente superior
+        rightPosition = randomRowStart * 4  + (randomColumnStart+1) //Adyacente derecha
+        leftPosition = randomRowStart * 4  + (randomColumnStart-1) //Adyacente izquierda
+
+        val listaPosiciones = mutableListOf(bottomPosition,topPosition,rightPosition,leftPosition)
+        //Si la columna es 0, ignorar leftPosition
+        if (randomColumnStart == 0) listaPosiciones.removeAt(3)
+        //Si la columna es 3, ignorar rightPosition
+        if (randomColumnStart == 3) listaPosiciones.removeAt(2)
+        println(listaPosiciones)
+        for (move in listaPosiciones) {
+            println(move)
+            if (move in 1..16) {//Si el movimiento es mayor a 0 y menor a 16
+                val card = gridLayout.getChildAt(move) as CardView
+                val image = card.findViewById<ImageView>(R.id.imageView)
+                image.setImageResource(R.drawable.img_2)
+            }
+        }
+    }
+
+
+
 
     private fun initComponents() {//Metodo para inicializar componentes
         mibinding =ActivityMainBinding.inflate(layoutInflater)
