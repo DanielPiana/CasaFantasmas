@@ -1,6 +1,7 @@
 package com.example.casafantasmas
 
 
+import Question
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -122,31 +123,37 @@ class MainActivity : AppCompatActivity() {
         if (randomColumnStart == 3) listaPosiciones.removeAt(2)
         println(listaPosiciones)
         for (move in listaPosiciones) {
-            println(move)
+            var answer = ""
+            var question:Question<*>
             if (move in 1..16) {//Si el movimiento es mayor a 0 y menor a 16
                 val card = gridLayout.getChildAt(move) as CardView
                 val image = card.findViewById<ImageView>(R.id.imageView)
                 image.setImageResource(R.drawable.img_2)
                 // ESTABLEZCO UN LISTENER PARA CUANDO HAGA CLICK A LAS TARJETAS DISPONIBLES PARA MOVERSE
-                // VALORAR SACAR A UN METODO
                 image.setOnClickListener {
-                    it.animate().scaleX(1.2f).scaleY(1.2f).setDuration(150).withEndAction {
-                        it.animate().scaleX(1f).scaleY(1f).setDuration(150)
-                    }
-                    var dialog = CustomDialogFragment()
-                    dialog.show(supportFragmentManager,"customDialog")
 
-                    //SACAR LA PREGUNTA Y BLOQUEAR EL RESTO DE LA APLICACION HASTA QUE RESPONDA
-                    //SI RESPONDE BIEN, LLAMAR A ESTE METODO OTRA VEZ Y SI NO, VOLVER A SACAR UNA PREGUNTA
+                    // CONFIGURACION DEL DIALOG FRAGMENT
+                    val dialog = CustomDialogFragment()
+                    val args = Bundle()
+                    question = Question.randomQuestion()
+                    args.putString("question_text", question.questionText)
+                    dialog.arguments = args
+
+                    // LISTENER PARA EL RESULT DEL DIALOG FRAGMENT PASANDO PARAMETROS POR BUNDLE
+                    supportFragmentManager.setFragmentResultListener("dialog_result",this) {_, bundle ->
+                        answer = bundle.getString("answer", "")
+                        if (question.checkAnswer(answer)) {
+                            println("Correcto")
+                        } else  {
+                            println("Incorrecto")
+                        }
+                    }
+
+                    dialog.show(supportFragmentManager,"customDialog")
                 }
             }
         }
     }
-
-
-
-
-
     private fun initComponents() {//Metodo para inicializar componentes
         mibinding =ActivityMainBinding.inflate(layoutInflater)
         setContentView(mibinding.root)

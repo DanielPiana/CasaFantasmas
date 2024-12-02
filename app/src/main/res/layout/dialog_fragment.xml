@@ -5,8 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
     android:background="@android:color/white"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="8dp">
+    app:cardCornerRadius="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -25,7 +24,7 @@
             android:textSize="20sp"
             android:textColor="@color/black"
             android:layout_marginHorizontal="20dp"
-            android:text="¿En qué año llegó el hombre a la Luna?"
+            android:text=""
             android:layout_marginTop="16dp" />
 
         <EditText
