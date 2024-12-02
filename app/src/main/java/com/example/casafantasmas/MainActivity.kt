@@ -133,6 +133,11 @@ class MainActivity : AppCompatActivity() {
                     it.animate().scaleX(1.2f).scaleY(1.2f).setDuration(150).withEndAction {
                         it.animate().scaleX(1f).scaleY(1f).setDuration(150)
                     }
+                    var dialog = CustomDialogFragment()
+                    dialog.show(supportFragmentManager,"customDialog")
+
+                    //SACAR LA PREGUNTA Y BLOQUEAR EL RESTO DE LA APLICACION HASTA QUE RESPONDA
+                    //SI RESPONDE BIEN, LLAMAR A ESTE METODO OTRA VEZ Y SI NO, VOLVER A SACAR UNA PREGUNTA
                 }
             }
         }
