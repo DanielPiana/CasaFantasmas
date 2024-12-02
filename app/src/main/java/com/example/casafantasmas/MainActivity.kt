@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         assingCardsToArray()
         displayMoves()
 
+
         //Acceder a una tarjeta en concreto
         val card1 = gridLayout.getChildAt(0) as CardView
         //Acceder a la imagen de dentro de la tarjeta
@@ -126,9 +127,17 @@ class MainActivity : AppCompatActivity() {
                 val card = gridLayout.getChildAt(move) as CardView
                 val image = card.findViewById<ImageView>(R.id.imageView)
                 image.setImageResource(R.drawable.img_2)
+                // ESTABLEZCO UN LISTENER PARA CUANDO HAGA CLICK A LAS TARJETAS DISPONIBLES PARA MOVERSE
+                // VALORAR SACAR A UN METODO
+                image.setOnClickListener {
+                    it.animate().scaleX(1.2f).scaleY(1.2f).setDuration(150).withEndAction {
+                        it.animate().scaleX(1f).scaleY(1f).setDuration(150)
+                    }
+                }
             }
         }
     }
+
 
 
 
