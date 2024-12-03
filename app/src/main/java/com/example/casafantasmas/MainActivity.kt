@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.GridLayout
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -135,7 +136,10 @@ class MainActivity : AppCompatActivity() {
         if (column == 0) listaPosiciones.removeAt(3)
         //Si la columna es 3, ignorar rightPosition
         if (column == 3) listaPosiciones.removeAt(2)
-        for (move in listaPosiciones) {
+        // HAGO UN ITERATOR PARA PODER MODIFICAR UNA LISTA MIENTRAS LA RECORRO
+        val iterator = listaPosiciones.iterator()
+        while (iterator.hasNext()) {
+            val move = iterator.next()
             println("move $move")
             var answer = ""
             var question:Question<*>
@@ -171,15 +175,18 @@ class MainActivity : AppCompatActivity() {
                             displayMoves(newRow,newColumn)
                             //cambiar antiguas posiciones a fondo predeterminado
                         } else  {
-                            println("Incorrecto")
+                            Toast.makeText(this, "Respuesta incorrecta, prueba otra vez", Toast.LENGTH_SHORT).show()
+
                         }
                     }
 
                     dialog.show(supportFragmentManager,"customDialog")
                 }
             } else {
+                // ELIMINAMOS EL ELEMENTO, PARA QUE NO DE ERROR AL USAR EL METODO resetOldPositions
+                // POR INTENTAR ACCEDER A UN INDEX DEL LAYOUT QUE NO EXISTE
                 println("elemento eliminado $move")
-                listaPosiciones.removeAt(move)
+                iterator.remove()
             }
         }
     }
