@@ -168,10 +168,11 @@ class MainActivity : AppCompatActivity() {
                             cardUsuario = card
                             resetOldPositions()
                             image.setImageResource(R.drawable.img_1)
+                            // VARIABLES PARA CONSEGUIR LA POSICION DE LA CARD CLICKEADA
                             val newRow = move / 4
                             val newColumn = move % 4
-                            //setear antiguos movimientos a imagen predeterminada
                             println(listaPosiciones)
+                            // CON LA NUEVA POSICION, VOLVEMOS A ENTRAR EN ESTE METODO
                             displayMoves(newRow,newColumn)
                             //cambiar antiguas posiciones a fondo predeterminado
                         } else  {
@@ -190,11 +191,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    fun resetOldPositions() {
+    fun resetOldPositions() { // PONEMOS LAS ANTIGUAS POSICIONES ADYACENTES A PREDETERMINADAS
         for (i in listaPosiciones) {
             val card = gridLayout.getChildAt(i) as CardView
             val image = card.findViewById<ImageView>(R.id.imageView)
             image.setImageResource(R.drawable.ic_launcher_background)
+            // DESACTIVAMOS LOS LISTENERS ANTIGUOS
+            image.setOnClickListener(null)
         }
     }
 
